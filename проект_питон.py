@@ -30,6 +30,11 @@ class ExpressionTree:   # Класс для работы с деревом вы�
             if expression[i] == ' ':
                 i += 1
                 continue
+
+            if i > 0 and (expression[i].isalpha() and expression[i-1].isdigit()) or \
+                         (expression[i].isalpha() and expression[i-1].isalpha()):
+                raise ValueError(
+                    "Ошибка: неявное умножение. Используйте явный знак '*' (например '3*b' вместо '3b')")
             
             if expression[i] in '()+-*/':
                 # Обработка унарного минуса
@@ -160,13 +165,13 @@ class FormulaProcessor:   # Класс для вычисления и упрощ
             return self.variables[node.value]
         
         left_val = self.evaluate(node.left) if node.left else 0
-        right_val = self.evaluate(node.right) if node.right else 0
-        
+        right_val = self.evaluate(node.right) if node.right else 0  
+
         if node.value == '+':
             return left_val + right_val
         elif node.value == '-':
             return left_val - right_val
-        elif node.value == '*':
+        elif node.value == '*': 
             return left_val * right_val
         elif node.value == '/':
             if right_val == 0:
